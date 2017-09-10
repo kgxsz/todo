@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import checkboxSprite from "./checkbox-sprite.svg";
+import trashIcon from "./trash-icon.svg";
 import "./App.css";
 
 class ItemAdder extends Component {
@@ -91,11 +92,21 @@ class Item extends Component {
           <img
             className={this.spriteClassName()}
             src={checkboxSprite}
-            alt="checkboxSprite"
+            alt="checkbox"
           />
         </div>
+
         <div className="Item__value">
           {this.props.item.value}
+        </div>
+
+        <div
+          className="Item__trash"
+          onClick={() => {
+            this.props.deleteItem(this.props.item.addedAt);
+          }}
+        >
+          <img src={trashIcon} alt="trash" />
         </div>
       </li>
     );
@@ -112,6 +123,7 @@ class ItemList extends Component {
               key={key.toString()}
               item={this.props.itemsByAddedAt[key]}
               toggleItemChecked={this.props.toggleItemChecked}
+              deleteItem={this.props.deleteItem}
             />
           )}
         </ul>
@@ -133,6 +145,7 @@ class App extends Component {
     );
     this.addItemToItemList = this.addItemToItemList.bind(this);
     this.toggleItemChecked = this.toggleItemChecked.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
   validateItemValue(itemValue) {
@@ -161,11 +174,23 @@ class App extends Component {
     this.setState({ itemsByAddedAt: itemsByAddedAt });
   }
 
+  deleteItem(addedAt) {
+    let itemsByAddedAt = this.state.itemsByAddedAt;
+    let itemList = this.state.itemList;
+    delete itemsByAddedAt[addedAt];
+
+    let index = itemList.indexOf(addedAt);
+    if (index > -1) {
+      itemList.splice(index, 1);
+    }
+    this.setState({ itemList: itemList, itemsByAddedAt: itemsByAddedAt });
+  }
+
   render() {
     return (
       <div className="App">
         <div className="App__header">
-          <span className="App__header__title">To Do List</span>
+          <span className="App__header__title">Todo List</span>
           <span className="App__header__subtitle">Developed with React</span>
         </div>
         <div className="App__body">
@@ -177,6 +202,7 @@ class App extends Component {
             itemList={this.state.itemList}
             itemsByAddedAt={this.state.itemsByAddedAt}
             toggleItemChecked={this.toggleItemChecked}
+            deleteItem={this.deleteItem}
           />
         </div>
       </div>

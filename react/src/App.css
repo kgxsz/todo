@@ -42,7 +42,6 @@
 .Item {
   height: 60px;
   display: flex;
-  background-color: #fafafa;
   margin-top: 10px;
 }
 
@@ -52,6 +51,7 @@
   align-items: center;
   white-space: nowrap;
   overflow-x: auto;
+  background-color: #fafafa;
 }
 
 .Item__checkbox {
@@ -59,6 +59,7 @@
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  background-color: #fafafa;
 }
 
 .Item__checkbox__sprite {
@@ -68,6 +69,12 @@
 
 .Item__checkbox__sprite--shifted {
   left: -60px;
+}
+
+.Item__trash {
+  min-width: 60px;
+  position: relative;
+  cursor: pointer;
 }
 
 .ItemList {
