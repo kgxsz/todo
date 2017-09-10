@@ -119,6 +119,12 @@ class ItemList extends Component {
     const emptyList = this.props.itemList.length < 1;
     return (
       <div className="ItemList">
+        {!emptyList &&
+          <div className="ItemList__options">
+            >
+            <div className="ItemList__options__divider">></div>
+            <button>options</button>
+          </div>}
         {emptyList &&
           <div className="ItemList__notice">
             <img
@@ -128,16 +134,17 @@ class ItemList extends Component {
             />
             There are no items
           </div>}
-        <ul>
-          {this.props.itemList.map(key =>
-            <Item
-              key={key.toString()}
-              item={this.props.itemsByAddedAt[key]}
-              toggleItemChecked={this.props.toggleItemChecked}
-              deleteItem={this.props.deleteItem}
-            />
-          )}
-        </ul>
+        {!emptyList &&
+          <ul>
+            {this.props.itemList.map(key =>
+              <Item
+                key={key.toString()}
+                item={this.props.itemsByAddedAt[key]}
+                toggleItemChecked={this.props.toggleItemChecked}
+                deleteItem={this.props.deleteItem}
+              />
+            )}
+          </ul>}
       </div>
     );
   }
@@ -205,12 +212,12 @@ class App extends Component {
           <span className="App__header__subtitle">Developed with React</span>
         </div>
         <div className="App__body">
-          <div className="divider--vertical" />
+          <div className="App__body__divider" />
           <ItemAdder
             validateItemValue={this.validateItemValue}
             addItemToItemList={this.addItemToItemList}
           />
-          <div className="divider--vertical" />
+          <div className="App__body__divider" />
           <ItemList
             itemList={this.state.itemList}
             itemsByAddedAt={this.state.itemsByAddedAt}
