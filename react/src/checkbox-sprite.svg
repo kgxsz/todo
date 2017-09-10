@@ -1,0 +1,14 @@
+<svg id="checkbox-sprite" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <rect id="Rectangle_9" data-name="Rectangle 9" class="cls-1" width="160" height="80"/>
+  <path id="Subtraction_1" data-name="Subtraction 1" d="M30,30H0V0H30V30ZM4,4V26H26V4Z" transform="translate(25 25)"/>
+  <rect id="Rectangle_14" data-name="Rectangle 14" width="10.25" height="4.5" transform="matrix(0.914, 0.407, -0.407, 0.914, 113.497, 40.619)"/>
+  <rect id="Rectangle_15" data-name="Rectangle 15" width="18" height="4.5" transform="matrix(0.407, -0.914, 0.914, 0.407, 117.328, 47.262)"/>
+  <path id="Subtraction_2" data-name="Subtraction 2" d="M30,30H0V0H30V30ZM4,4V26H26V4Z" transform="translate(105 25)"/>
+</svg>
