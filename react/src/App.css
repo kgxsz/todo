@@ -1,6 +1,7 @@
 .ItemAdder {
   display: flex;
   width: 100%;
+  margin-top: 25px;
 }
 
 .ItemAdder__input {
@@ -18,7 +19,6 @@
 }
 
 .ItemAdder__input:focus {
-  outline: none;
   border-color: #2b2b2b;
 }
 
@@ -43,10 +43,6 @@
   height: 60px;
   display: flex;
   margin-top: 10px;
-}
-
-.Item:first-child {
-  margin-top: 0;
 }
 
 .Item__value {
@@ -86,6 +82,7 @@
 }
 
 .ItemList__notice {
+  margin-top: 25px;
   text-align: center;
   font-size: 16px;
   color: #ababab;
@@ -95,6 +92,24 @@
   display: block;
   margin: auto;
   width: 200px;
+}
+
+.ItemList__options {
+  display: flex;
+  align-items: center;
+}
+
+.ItemList__options__sort {
+  min-width: 60px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.ItemList__options__divider {
+  flex-grow: 1;
+  height: 0;
+  border: 1.5px #2b2b2b solid;
 }
 
 .App {
@@ -132,6 +147,6 @@
 .App__body__divider {
   width: 0;
   height: 50px;
-  margin: 25px auto 30px auto;
+  margin: 25px auto 0 auto;
   border: 1.5px #2b2b2b solid;
 }

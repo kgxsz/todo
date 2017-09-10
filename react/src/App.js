@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import checkboxSprite from "./checkbox-sprite.svg";
 import trashIcon from "./trash-icon.svg";
 import smileyIcon from "./smiley-icon.svg";
+import sortIcon from "./sort-icon.svg";
 import "./App.css";
 
 class ItemAdder extends Component {
@@ -121,9 +122,13 @@ class ItemList extends Component {
       <div className="ItemList">
         {!emptyList &&
           <div className="ItemList__options">
+            <div className="ItemList__options__divider" />
+            <button
+              className="ItemList__options__sort"
+              onClick={this.props.toggleSortOrder}
             >
-            <div className="ItemList__options__divider">></div>
-            <button>options</button>
+              <img src={sortIcon} alt="sort" />
+            </button>
           </div>}
         {emptyList &&
           <div className="ItemList__notice">
@@ -155,7 +160,8 @@ class App extends Component {
     super();
     this.state = {
       itemList: [],
-      itemsByAddedAt: {}
+      itemsByAddedAt: {},
+      sortByDescAddedAt: true
     };
     this.validateItemValue = this.validateItemValue.bind(this);
     this.coerceInputValueToItemValue = this.coerceInputValueToItemValue.bind(
@@ -164,6 +170,7 @@ class App extends Component {
     this.addItemToItemList = this.addItemToItemList.bind(this);
     this.toggleItemChecked = this.toggleItemChecked.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.toggleSortOrder = this.toggleSortOrder.bind(this);
   }
 
   validateItemValue(itemValue) {
@@ -175,13 +182,25 @@ class App extends Component {
     return inputValue.trim();
   }
 
+  sortItemList(itemList, sortByDescAddedAt) {
+    itemList.sort(function(a, b) {
+      if (sortByDescAddedAt) {
+        return a > b ? -1 : a < b ? 1 : 0;
+      } else {
+        return a > b ? 1 : a < b ? -1 : 0;
+      }
+    });
+  }
+
   addItemToItemList(inputValue) {
     let value = this.coerceInputValueToItemValue(inputValue);
     let addedAt = Date.now();
     let item = { addedAt: addedAt, value: value, checked: false };
     let itemsByAddedAt = this.state.itemsByAddedAt;
     let itemList = this.state.itemList;
+    let sortByDescAddedAt = this.state.sortByDescAddedAt;
     itemList.push(addedAt);
+    this.sortItemList(itemList, sortByDescAddedAt);
     itemsByAddedAt[addedAt] = item;
     this.setState({ itemList: itemList, itemsByAddedAt: itemsByAddedAt });
   }
@@ -204,6 +223,16 @@ class App extends Component {
     this.setState({ itemList: itemList, itemsByAddedAt: itemsByAddedAt });
   }
 
+  toggleSortOrder() {
+    let itemList = this.state.itemList;
+    let sortByDescAddedAt = !this.state.sortByDescAddedAt;
+    this.sortItemList(itemList, sortByDescAddedAt);
+    this.setState({
+      itemList: itemList,
+      sortByDescAddedAt: sortByDescAddedAt
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -223,6 +252,7 @@ class App extends Component {
             itemsByAddedAt={this.state.itemsByAddedAt}
             toggleItemChecked={this.toggleItemChecked}
             deleteItem={this.deleteItem}
+            toggleSortOrder={this.toggleSortOrder}
           />
         </div>
       </div>
