@@ -1,7 +1,7 @@
 .divider--vertical {
   width: 0;
-  height: 50px;
-  margin: 20px auto 20px auto;
+  height: 60px;
+  margin: 30px auto 30px auto;
   border: 1.5px #2b2b2b solid;
 }
 
@@ -94,9 +94,14 @@
 
 .ItemList__notice {
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   color: #ababab;
-  margin-top: 100px;
+}
+
+.ItemList__notice__icon {
+  display: block;
+  margin: auto;
+  width: 200px;
 }
 
 .App {

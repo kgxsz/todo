@@ -116,8 +116,18 @@ class Item extends Component {
 
 class ItemList extends Component {
   render() {
+    const emptyList = this.props.itemList.length < 1;
     return (
       <div className="ItemList">
+        {emptyList &&
+          <div className="ItemList__notice">
+            <img
+              className="ItemList__notice__icon"
+              src={smileyIcon}
+              alt="smiley"
+            />
+            There are no items
+          </div>}
         <ul>
           {this.props.itemList.map(key =>
             <Item
