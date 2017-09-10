@@ -85,7 +85,7 @@ class Item extends Component {
   render() {
     return (
       <li className="Item">
-        <div
+        <button
           className="Item__checkbox"
           onClick={() => {
             this.props.toggleItemChecked(this.props.item.addedAt);
@@ -96,20 +96,20 @@ class Item extends Component {
             src={checkboxSprite}
             alt="checkbox"
           />
-        </div>
+        </button>
 
         <div className="Item__value">
           {this.props.item.value}
         </div>
 
-        <div
+        <button
           className="Item__trash"
           onClick={() => {
             this.props.deleteItem(this.props.item.addedAt);
           }}
         >
           <img src={trashIcon} alt="trash" />
-        </div>
+        </button>
       </li>
     );
   }
