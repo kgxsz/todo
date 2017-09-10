@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import checkboxSprite from "./checkbox-sprite.svg";
 import trashIcon from "./trash-icon.svg";
+import smileyIcon from "./smiley-icon.svg";
 import "./App.css";
 
 class ItemAdder extends Component {
@@ -194,10 +195,12 @@ class App extends Component {
           <span className="App__header__subtitle">Developed with React</span>
         </div>
         <div className="App__body">
+          <div className="divider--vertical" />
           <ItemAdder
             validateItemValue={this.validateItemValue}
             addItemToItemList={this.addItemToItemList}
           />
+          <div className="divider--vertical" />
           <ItemList
             itemList={this.state.itemList}
             itemsByAddedAt={this.state.itemsByAddedAt}
