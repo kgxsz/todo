@@ -60,6 +60,7 @@
 
 .Item__checkbox {
   width: 60px;
+  min-width: 60px;
   border: none;
   position: relative;
   overflow: hidden;
