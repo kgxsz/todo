@@ -1,8 +1,8 @@
 module Main exposing (..)
 
 import Dict exposing (Dict)
-import Html exposing (Html, div, form, img, input, span, text)
-import Html.Attributes exposing (class, placeholder, src, type_, value)
+import Html exposing (Html, button, div, form, img, input, li, span, text, ul)
+import Html.Attributes exposing (alt, class, placeholder, src, type_, value)
 import Time exposing (Time)
 
 
@@ -36,8 +36,8 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { flags = flags
       , inputValue = ""
-      , itemList = []
-      , itemsByAddedAt = Dict.empty
+      , itemList = [ 0 ]
+      , itemsByAddedAt = Dict.singleton 0 { addedAt = 0, value = "Dummy Item" }
       , sortByDescAddedAt = True
       }
     , Cmd.none
@@ -98,10 +98,62 @@ itemAdder model =
 
 itemList : Model -> Html Msg
 itemList model =
+    let
+        items =
+            List.filterMap
+                (\x -> Dict.get x model.itemsByAddedAt)
+                model.itemList
+    in
     div [ class "ItemList" ]
-        [ div [ class "ItemList__notice" ]
-            [ img [ class "ItemList__notice__icon", src model.flags.smileyIconPath ] [] ]
-        ]
+        (if List.isEmpty items then
+            [ div [ class "ItemList__notice" ]
+                [ img
+                    [ class "ItemList__notice__icon"
+                    , src model.flags.smileyIconPath
+                    , alt "smiley"
+                    ]
+                    []
+                , text "There are no items"
+                ]
+            ]
+         else
+            [ div [ class "ItemList__options" ]
+                [ div [ class "ItemList__options__divider" ] []
+                , button [ class "ItemList__options__sort" ]
+                    [ img
+                        [ src model.flags.sortIconPath
+                        , alt "sort"
+                        ]
+                        []
+                    ]
+                ]
+            , ul []
+                (List.map
+                    (\item ->
+                        li [ class "Item" ]
+                            [ button [ class "Item__checkbox" ]
+                                [ img
+                                    [ class "Item__checkbox__sprite"
+                                    , src model.flags.checkboxSpritePath
+                                    , alt "checkbox"
+                                    ]
+                                    []
+                                ]
+                            , div [ class "Item__value" ]
+                                [ text item.value ]
+                            , button [ class "Item__trash" ]
+                                [ img
+                                    [ src model.flags.trashIconPath
+                                    , alt "trash"
+                                    ]
+                                    []
+                                ]
+                            ]
+                    )
+                    items
+                )
+            ]
+        )
 
 
 
