@@ -1,19 +1,47 @@
 module Main exposing (..)
 
-import Html exposing (Html, div, img, span, text)
-import Html.Attributes exposing (class, src)
+import Dict exposing (Dict)
+import Html exposing (Html, div, form, img, input, span, text)
+import Html.Attributes exposing (class, placeholder, src, type_, value)
+import Time exposing (Time)
 
 
 ---- MODEL ----
 
 
+type alias Flags =
+    { smileyIconPath : String
+    , trashIconPath : String
+    , sortIconPath : String
+    , checkboxSpritePath : String
+    }
+
+
+type alias Item =
+    { addedAt : Time
+    , value : String
+    }
+
+
 type alias Model =
-    {}
+    { flags : Flags
+    , inputValue : String
+    , itemList : List Time
+    , itemsByAddedAt : Dict Time Item
+    , sortByDescAddedAt : Bool
+    }
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( {}, Cmd.none )
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    ( { flags = flags
+      , inputValue = ""
+      , itemList = []
+      , itemsByAddedAt = Dict.empty
+      , sortByDescAddedAt = True
+      }
+    , Cmd.none
+    )
 
 
 
@@ -42,24 +70,47 @@ view model =
             ]
         , div [ class "App__body" ]
             [ div [ class "App__body__divider" ] []
-            , itemAdder
+            , itemAdder model
             , div [ class "App__body__divider" ] []
+            , itemList model
             ]
         ]
 
 
-itemAdder : Html Msg
-itemAdder =
-    div [ class "ItemAdder" ] [ text "hello" ]
+itemAdder : Model -> Html Msg
+itemAdder model =
+    form [ class "ItemAdder" ]
+        [ input
+            [ class "ItemAdder__input"
+            , type_ "text"
+            , placeholder "add an item here"
+            , value model.inputValue
+            ]
+            []
+        , input
+            [ class "ItemAdder__button"
+            , type_ "submit"
+            , value "add"
+            ]
+            []
+        ]
+
+
+itemList : Model -> Html Msg
+itemList model =
+    div [ class "ItemList" ]
+        [ div [ class "ItemList__notice" ]
+            [ img [ class "ItemList__notice__icon", src model.flags.smileyIconPath ] [] ]
+        ]
 
 
 
 ---- PROGRAM ----
 
 
-main : Program Never Model Msg
+main : Program Flags Model Msg
 main =
-    Html.program
+    Html.programWithFlags
         { view = view
         , init = init
         , update = update
