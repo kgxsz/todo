@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Dict exposing (Dict)
 import Html exposing (Html, button, div, form, img, input, li, span, text, ul)
-import Html.Attributes exposing (alt, class, placeholder, src, type_, value)
+import Html.Attributes exposing (alt, class, disabled, placeholder, src, type_, value)
 import Time exposing (Time)
 
 
@@ -20,6 +20,7 @@ type alias Flags =
 type alias Item =
     { addedAt : Time
     , value : String
+    , checked : Bool
     }
 
 
@@ -37,7 +38,7 @@ init flags =
     ( { flags = flags
       , inputValue = ""
       , itemList = [ 0 ]
-      , itemsByAddedAt = Dict.singleton 0 { addedAt = 0, value = "Dummy Item" }
+      , itemsByAddedAt = Dict.singleton 0 { addedAt = 0, value = "Dummy Item", checked = False }
       , sortByDescAddedAt = True
       }
     , Cmd.none
@@ -77,8 +78,21 @@ view model =
         ]
 
 
+validateInputValue : String -> Bool
+validateInputValue value =
+    (value |> String.trim |> String.isEmpty |> not)
+        && ((value |> String.trim |> String.length) < 256)
+
+
 itemAdder : Model -> Html Msg
 itemAdder model =
+    let
+        buttonClass =
+            if validateInputValue model.inputValue then
+                "ItemAdder__button"
+            else
+                "ItemAdder__button ItemAdder__button--disabled"
+    in
     form [ class "ItemAdder" ]
         [ input
             [ class "ItemAdder__input"
@@ -88,9 +102,10 @@ itemAdder model =
             ]
             []
         , input
-            [ class "ItemAdder__button"
+            [ class buttonClass
             , type_ "submit"
             , value "add"
+            , disabled (model.inputValue |> validateInputValue |> not)
             ]
             []
         ]
@@ -130,10 +145,17 @@ itemList model =
             , ul []
                 (List.map
                     (\item ->
+                        let
+                            spriteClass =
+                                if not item.checked then
+                                    "Item__checkbox__sprite"
+                                else
+                                    "Item__checkbox__sprite Item__checkbox__sprite--shifted"
+                        in
                         li [ class "Item" ]
                             [ button [ class "Item__checkbox" ]
                                 [ img
-                                    [ class "Item__checkbox__sprite"
+                                    [ class spriteClass
                                     , src model.flags.checkboxSpritePath
                                     , alt "checkbox"
                                     ]
