@@ -38,7 +38,12 @@ init flags =
     ( { flags = flags
       , inputValue = ""
       , itemList = [ 0 ]
-      , itemsByAddedAt = Dict.singleton 0 { addedAt = 0, value = "Dummy Item", checked = False }
+      , itemsByAddedAt =
+            Dict.singleton 0
+                { addedAt = 0
+                , value = "Dummy Item"
+                , checked = False
+                }
       , sortByDescAddedAt = True
       }
     , Cmd.none
@@ -144,38 +149,50 @@ itemList model =
                 ]
             , ul []
                 (List.map
-                    (\item ->
-                        let
-                            spriteClass =
-                                if not item.checked then
-                                    "Item__checkbox__sprite"
-                                else
-                                    "Item__checkbox__sprite Item__checkbox__sprite--shifted"
-                        in
-                        li [ class "Item" ]
-                            [ button [ class "Item__checkbox" ]
-                                [ img
-                                    [ class spriteClass
-                                    , src model.flags.checkboxSpritePath
-                                    , alt "checkbox"
-                                    ]
-                                    []
-                                ]
-                            , div [ class "Item__value" ]
-                                [ text item.value ]
-                            , button [ class "Item__trash" ]
-                                [ img
-                                    [ src model.flags.trashIconPath
-                                    , alt "trash"
-                                    ]
-                                    []
-                                ]
-                            ]
+                    (\x ->
+                        item x
+                            { checkboxSpritePath = model.flags.checkboxSpritePath
+                            , trashIconPath = model.flags.trashIconPath
+                            }
                     )
                     items
                 )
             ]
         )
+
+
+type alias ItemAttr =
+    { checkboxSpritePath : String, trashIconPath : String }
+
+
+item : Item -> ItemAttr -> Html Msg
+item item { checkboxSpritePath, trashIconPath } =
+    let
+        spriteClass =
+            if not item.checked then
+                "Item__checkbox__sprite"
+            else
+                "Item__checkbox__sprite Item__checkbox__sprite--shifted"
+    in
+    li [ class "Item" ]
+        [ button [ class "Item__checkbox" ]
+            [ img
+                [ class spriteClass
+                , src checkboxSpritePath
+                , alt "checkbox"
+                ]
+                []
+            ]
+        , div [ class "Item__value" ]
+            [ text item.value ]
+        , button [ class "Item__trash" ]
+            [ img
+                [ src trashIconPath
+                , alt "trash"
+                ]
+                []
+            ]
+        ]
 
 
 
