@@ -1,7 +1,7 @@
 module Main exposing (..)
 
-import Html exposing (Html, div, img, text)
-import Html.Attributes exposing (src)
+import Html exposing (Html, div, img, span, text)
+import Html.Attributes exposing (class, src)
 
 
 ---- MODEL ----
@@ -35,10 +35,22 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ img [ src "/logo.svg" ] []
-        , div [] [ text "Your Elm App is working!" ]
+    div [ class "App" ]
+        [ div [ class "App__header" ]
+            [ span [ class "App__header__title" ] [ text "Todo List" ]
+            , span [ class "App__header__subtitle" ] [ text "Developed with Elm" ]
+            ]
+        , div [ class "App__body" ]
+            [ div [ class "App__body__divider" ] []
+            , itemAdder
+            , div [ class "App__body__divider" ] []
+            ]
         ]
+
+
+itemAdder : Html Msg
+itemAdder =
+    div [ class "ItemAdder" ] [ text "hello" ]
 
 
 
