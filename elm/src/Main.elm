@@ -56,6 +56,7 @@ type Msg
     | SubmitInputValue
     | AddItem Time
     | DeleteItem Time
+    | ToggleSortOrder
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -73,25 +74,9 @@ update msg model =
                     { model
                         | inputValue = ""
                         , itemList =
-                            List.sortWith
-                                (\x y ->
-                                    case compare x y of
-                                        LT ->
-                                            if model.sortByDescAddedAt then
-                                                GT
-                                            else
-                                                LT
-
-                                        EQ ->
-                                            EQ
-
-                                        GT ->
-                                            if model.sortByDescAddedAt then
-                                                LT
-                                            else
-                                                GT
-                                )
+                            sortItemList
                                 (addedAt :: model.itemList)
+                                model.sortByDescAddedAt
                         , itemsByAddedAt =
                             Dict.insert addedAt
                                 { addedAt = addedAt
@@ -113,6 +98,43 @@ update msg model =
                     }
             in
             ( updatedModel, Cmd.none )
+
+        ToggleSortOrder ->
+            let
+                sortByDescAddedAt =
+                    not model.sortByDescAddedAt
+
+                updatedModel =
+                    { model
+                        | sortByDescAddedAt = sortByDescAddedAt
+                        , itemList =
+                            sortItemList model.itemList sortByDescAddedAt
+                    }
+            in
+            ( updatedModel, Cmd.none )
+
+
+sortItemList : List Time -> Bool -> List Time
+sortItemList itemList sortByDescAddedAt =
+    List.sortWith
+        (\x y ->
+            case compare x y of
+                LT ->
+                    if sortByDescAddedAt then
+                        GT
+                    else
+                        LT
+
+                EQ ->
+                    EQ
+
+                GT ->
+                    if sortByDescAddedAt then
+                        LT
+                    else
+                        GT
+        )
+        itemList
 
 
 
@@ -192,7 +214,10 @@ itemList model =
          else
             [ div [ class "ItemList__options" ]
                 [ div [ class "ItemList__options__divider" ] []
-                , button [ class "ItemList__options__sort" ]
+                , button
+                    [ class "ItemList__options__sort"
+                    , onClick ToggleSortOrder
+                    ]
                     [ img
                         [ src model.flags.sortIconPath
                         , alt "sort"
@@ -238,11 +263,13 @@ item item { checkboxSpritePath, trashIconPath } =
             ]
         , div [ class "Item__value" ]
             [ text item.value ]
-        , button [ class "Item__trash" ]
+        , button
+            [ class "Item__trash"
+            , onClick (DeleteItem item.addedAt)
+            ]
             [ img
                 [ src trashIconPath
                 , alt "trash"
-                , onClick (DeleteItem item.addedAt)
                 ]
                 []
             ]
