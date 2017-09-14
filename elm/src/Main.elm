@@ -3,7 +3,7 @@ module Main exposing (..)
 import Dict exposing (Dict)
 import Html exposing (Html, button, div, form, img, input, li, span, text, ul)
 import Html.Attributes exposing (alt, class, disabled, placeholder, src, type_, value)
-import Html.Events exposing (onInput, onSubmit)
+import Html.Events exposing (onClick, onInput, onSubmit)
 import Task
 import Time exposing (Time)
 
@@ -55,6 +55,7 @@ type Msg
     = UpdateInputValue String
     | SubmitInputValue
     | AddItem Time
+    | DeleteItem Time
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -98,6 +99,17 @@ update msg model =
                                 , checked = False
                                 }
                                 model.itemsByAddedAt
+                    }
+            in
+            ( updatedModel, Cmd.none )
+
+        DeleteItem addedAt ->
+            let
+                updatedModel =
+                    { model
+                        | itemList =
+                            List.filter (\x -> x /= addedAt) model.itemList
+                        , itemsByAddedAt = Dict.remove addedAt model.itemsByAddedAt
                     }
             in
             ( updatedModel, Cmd.none )
@@ -230,6 +242,7 @@ item item { checkboxSpritePath, trashIconPath } =
             [ img
                 [ src trashIconPath
                 , alt "trash"
+                , onClick (DeleteItem item.addedAt)
                 ]
                 []
             ]
