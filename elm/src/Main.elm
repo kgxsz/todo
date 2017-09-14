@@ -4,6 +4,7 @@ import Dict exposing (Dict)
 import Html exposing (Html, button, div, form, img, input, li, span, text, ul)
 import Html.Attributes exposing (alt, class, disabled, placeholder, src, type_, value)
 import Html.Events exposing (onInput, onSubmit)
+import Task
 import Time exposing (Time)
 
 
@@ -39,12 +40,7 @@ init flags =
     ( { flags = flags
       , inputValue = ""
       , itemList = [ 0 ]
-      , itemsByAddedAt =
-            Dict.singleton 0
-                { addedAt = 0
-                , value = "Dummy Item"
-                , checked = False
-                }
+      , itemsByAddedAt = Dict.empty
       , sortByDescAddedAt = True
       }
     , Cmd.none
@@ -58,6 +54,7 @@ init flags =
 type Msg
     = UpdateInputValue String
     | SubmitInputValue
+    | AddItem Time
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -67,14 +64,33 @@ update msg model =
             ( { model | inputValue = inputValue }, Cmd.none )
 
         SubmitInputValue ->
-            let
-                addedAt =
-                    0
+            ( model, Task.perform AddItem Time.now )
 
+        AddItem addedAt ->
+            let
                 updatedModel =
                     { model
                         | inputValue = ""
-                        , itemList = model.itemList ++ [ addedAt ]
+                        , itemList =
+                            List.sortWith
+                                (\x y ->
+                                    case compare x y of
+                                        LT ->
+                                            if model.sortByDescAddedAt then
+                                                GT
+                                            else
+                                                LT
+
+                                        EQ ->
+                                            EQ
+
+                                        GT ->
+                                            if model.sortByDescAddedAt then
+                                                LT
+                                            else
+                                                GT
+                                )
+                                (addedAt :: model.itemList)
                         , itemsByAddedAt =
                             Dict.insert addedAt
                                 { addedAt = addedAt
@@ -107,8 +123,8 @@ view model =
         ]
 
 
-validateInputValue : String -> Bool
-validateInputValue value =
+validInputValue : String -> Bool
+validInputValue value =
     (value |> String.trim |> String.isEmpty |> not)
         && ((value |> String.trim |> String.length) < 256)
 
@@ -117,7 +133,7 @@ itemAdder : Model -> Html Msg
 itemAdder model =
     let
         buttonClass =
-            if validateInputValue model.inputValue then
+            if validInputValue model.inputValue then
                 "ItemAdder__button"
             else
                 "ItemAdder__button ItemAdder__button--disabled"
@@ -135,7 +151,7 @@ itemAdder model =
             [ class buttonClass
             , type_ "submit"
             , value "add"
-            , disabled (model.inputValue |> validateInputValue |> not)
+            , disabled (model.inputValue |> validInputValue |> not)
             ]
             []
         ]
