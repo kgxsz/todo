@@ -3,6 +3,7 @@ module Main exposing (..)
 import Dict exposing (Dict)
 import Html exposing (Html, button, div, form, img, input, li, span, text, ul)
 import Html.Attributes exposing (alt, class, disabled, placeholder, src, type_, value)
+import Html.Events exposing (onInput, onSubmit)
 import Time exposing (Time)
 
 
@@ -55,12 +56,35 @@ init flags =
 
 
 type Msg
-    = NoOp
+    = UpdateInputValue String
+    | SubmitInputValue
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        UpdateInputValue inputValue ->
+            ( { model | inputValue = inputValue }, Cmd.none )
+
+        SubmitInputValue ->
+            let
+                addedAt =
+                    0
+
+                updatedModel =
+                    { model
+                        | inputValue = ""
+                        , itemList = model.itemList ++ [ addedAt ]
+                        , itemsByAddedAt =
+                            Dict.insert addedAt
+                                { addedAt = addedAt
+                                , value = model.inputValue
+                                , checked = False
+                                }
+                                model.itemsByAddedAt
+                    }
+            in
+            ( updatedModel, Cmd.none )
 
 
 
@@ -98,12 +122,13 @@ itemAdder model =
             else
                 "ItemAdder__button ItemAdder__button--disabled"
     in
-    form [ class "ItemAdder" ]
+    form [ class "ItemAdder", onSubmit SubmitInputValue ]
         [ input
             [ class "ItemAdder__input"
             , type_ "text"
             , placeholder "add an item here"
             , value model.inputValue
+            , onInput UpdateInputValue
             ]
             []
         , input
