@@ -39,7 +39,7 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { flags = flags
       , inputValue = ""
-      , itemList = [ 0 ]
+      , itemList = []
       , itemsByAddedAt = Dict.empty
       , sortByDescAddedAt = True
       }
@@ -55,6 +55,7 @@ type Msg
     = UpdateInputValue String
     | SubmitInputValue
     | AddItem Time
+    | ToggleItemChecked Time
     | DeleteItem Time
     | ToggleSortOrder
 
@@ -87,6 +88,24 @@ update msg model =
                     }
             in
             ( updatedModel, Cmd.none )
+
+        ToggleItemChecked addedAt ->
+            ( { model
+                | itemsByAddedAt =
+                    Dict.update
+                        addedAt
+                        (\x ->
+                            case x of
+                                Just item ->
+                                    Just { item | checked = not item.checked }
+
+                                Nothing ->
+                                    Nothing
+                        )
+                        model.itemsByAddedAt
+              }
+            , Cmd.none
+            )
 
         DeleteItem addedAt ->
             let
@@ -258,6 +277,7 @@ item item { checkboxSpritePath, trashIconPath } =
                 [ class spriteClass
                 , src checkboxSpritePath
                 , alt "checkbox"
+                , onClick (ToggleItemChecked item.addedAt)
                 ]
                 []
             ]
