@@ -1,9 +1,39 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { sortByDescAddedAt } from "./actions";
+import { sortByDescAddedAt, toggleItemChecked, deleteItem } from "./actions";
+import checkboxSprite from "./checkbox-sprite.svg";
+import trashIcon from "./trash-icon.svg";
 import smileyIcon from "./smiley-icon.svg";
 import sortIcon from "./sort-icon.svg";
 import "./App.css";
+
+class Item extends Component {
+  render() {
+    let checkboxSpriteClassName = this.props.checked
+      ? "Item__checkbox__sprite Item__checkbox__sprite--shifted"
+      : "Item__checkbox__sprite";
+    return (
+      <li className="Item">
+        <button
+          className="Item__checkbox"
+          onClick={this.props.toggleItemChecked}
+        >
+          <img
+            className={checkboxSpriteClassName}
+            src={checkboxSprite}
+            alt="checkbox"
+          />
+        </button>
+
+        <div className="Item__value">{this.props.value}</div>
+
+        <button className="Item__trash" onClick={this.props.deleteItem}>
+          <img src={trashIcon} alt="trash" />
+        </button>
+      </li>
+    );
+  }
+}
 
 class ItemList extends Component {
   render() {
@@ -30,18 +60,22 @@ class ItemList extends Component {
             There are no items
           </div>
         )}
-        {/* {!emptyList && (
+        {!this.props.emptyList && (
           <ul>
-            {this.props.itemList.map(key => (
+            {this.props.itemList.map(addedAt => (
               <Item
-                key={key.toString()}
-                item={this.props.itemsByAddedAt[key]}
-                toggleItemChecked={this.props.toggleItemChecked}
-                deleteItem={this.props.deleteItem}
+                key={addedAt.toString()}
+                {...this.props.itemsByAddedAt[addedAt]}
+                toggleItemChecked={() => {
+                  this.props.toggleItemChecked(addedAt);
+                }}
+                deleteItem={() => {
+                  this.props.deleteItem(addedAt);
+                }}
               />
             ))}
           </ul>
-        )} */}
+        )}
       </div>
     );
   }
@@ -50,14 +84,22 @@ class ItemList extends Component {
 const ItemListContainer = connect(
   state => {
     return {
-      emptyList: true, //state.itemList.length < 1;
-      sortByDescAddedAt: state.sortByDescAddedAt
+      emptyList: state.itemList.length < 1,
+      sortByDescAddedAt: state.sortByDescAddedAt,
+      itemList: state.itemList,
+      itemsByAddedAt: state.itemsByAddedAt
     };
   },
   dispatch => {
     return {
-      onToggleSortByDescAddedAtClick: () => {
+      toggleSortByDescAddedAt: () => {
         dispatch(sortByDescAddedAt());
+      },
+      toggleItemChecked: addedAt => {
+        dispatch(toggleItemChecked(addedAt));
+      },
+      deleteItem: addedAt => {
+        dispatch(deleteItem(addedAt));
       }
     };
   }
