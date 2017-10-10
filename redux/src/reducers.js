@@ -1,66 +1,73 @@
-import { combineReducers } from "redux";
-
-const sortByDescAddedAt = (state = true, action) => {
-  switch (action.type) {
-    case "TOGGLE_SORT_BY_DESC_ADDED_AT":
-      return state ? false : true;
-    default:
-      return state;
-  }
+const initialState = {
+  sortByDescAddedAt: false,
+  itemsByAddedAt: {},
+  itemList: [],
+  inputValue: ""
 };
 
-const itemsByAddedAt = (state = {}, action) => {
+const appReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "TOGGLE_SORT_BY_DESC_ADDED_AT":
+      return state.sortByDescAddedAt ? false : true;
+
     case "TOGGLE_ITEM_CHECKED":
       return {
         ...state,
-        [action.addedAt]: {
-          ...state[action.addedAt],
-          checked: !state[action.addedAt].checked
+        itemsByAddedAt: {
+          ...state.itemsByAddedAt,
+          [action.addedAt]: {
+            ...state.itemsByAddedAt[action.addedAt],
+            checked: !state.itemsByAddedAt[action.addedAt].checked
+          }
         }
       };
+
     case "DELETE_ITEM":
-      let itemsByAddedAt = Object.assign({}, state);
+      let itemsByAddedAt = Object.assign({}, state.itemsByAddedAt);
+      let index = state.itemList.indexOf(action.addedAt);
       delete itemsByAddedAt[action.addedAt];
-      return itemsByAddedAt;
-    case "ADD_ITEM_TO_ITEM_LIST":
       return {
         ...state,
-        [action.item.addedAt]: action.item
+        itemList: [
+          ...state.itemList.slice(0, index),
+          ...state.itemList.slice(index + 1)
+        ],
+        itemsByAddedAt: itemsByAddedAt
       };
-    default:
-      return state;
-  }
-};
 
-const itemList = (state = [], action) => {
-  switch (action.type) {
-    case "DELETE_ITEM":
-      let index = state.indexOf(action.addedAt);
-      return [...state.slice(0, index), ...state.slice(index + 1)];
-    case "ADD_ITEM_TO_ITEM_LIST":
-      return [action.item.addedAt, ...state.slice(0)];
-    default:
-      return state;
-  }
-};
-
-const inputValue = (state = "", action) => {
-  switch (action.type) {
     case "UPDATE_INPUT_VALUE":
-      return action.value;
+      return {
+        ...state,
+        inputValue: action.value
+      };
+
     case "ADD_ITEM_TO_ITEM_LIST":
-      return "";
+      let inputValueLength = state.inputValue.trim().length;
+      let validInputValue =
+        state.inputValue && inputValueLength > 0 && inputValueLength < 256;
+
+      if (validInputValue) {
+        let item = {
+          addedAt: action.addedAt,
+          value: state.inputValue,
+          checked: false
+        };
+        return {
+          ...state,
+          inputValue: "",
+          itemsByAddedAt: {
+            ...state.itemsByAddedAt,
+            [item.addedAt]: item
+          },
+          itemList: [item.addedAt, ...state.itemList.slice(0)]
+        };
+      } else {
+        return state;
+      }
+
     default:
       return state;
   }
 };
-
-const appReducer = combineReducers({
-  sortByDescAddedAt,
-  itemsByAddedAt,
-  itemList,
-  inputValue
-});
 
 export default appReducer;

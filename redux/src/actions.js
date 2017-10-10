@@ -25,9 +25,9 @@ export const updateInputValue = value => {
   };
 };
 
-export const addItemToItemList = item => {
+export const addItemToItemList = addedAt => {
   return {
     type: "ADD_ITEM_TO_ITEM_LIST",
-    item: item
+    addedAt: addedAt
   };
 };

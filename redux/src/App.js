@@ -23,12 +23,8 @@ class ItemAdder extends Component {
       <form
         onSubmit={e => {
           if (this.props.validInputValue) {
-            let item = {
-              addedAt: Date.now(),
-              value: this.props.inputValue,
-              checked: false
-            };
-            this.props.addItemToItemList(item);
+            let addedAt = Date.now();
+            this.props.addItemToItemList(addedAt);
           }
           e.preventDefault();
         }}
@@ -71,8 +67,8 @@ const ItemAdderContainer = connect(
       updateInputValue: value => {
         dispatch(updateInputValue(value));
       },
-      addItemToItemList: item => {
-        dispatch(addItemToItemList(item));
+      addItemToItemList: addedAt => {
+        dispatch(addItemToItemList(addedAt));
       }
     };
   }
@@ -162,7 +158,7 @@ const ItemListContainer = connect(
   },
   dispatch => {
     return {
-      toggleSortByDescAddedAt: () => {
+      toggleSortByDescAddedAt: value => {
         dispatch(sortByDescAddedAt());
       },
       toggleItemChecked: addedAt => {
