@@ -13,3 +13,8 @@
 ## Elm
 - For local development, in the `elm` directory, run `elm-app start`.
 - To build and deploy, in the `elm` directory, run `elm-app build`, then `firebase deploy`.
+
+
+## Redux
+- For local development, in the `redux` directory, run `npm run start`.
+- To build and deploy, in the `redux` directory, run `npm run build`, then `firebase deploy`.
