@@ -18,10 +18,10 @@ export const deleteItem = addedAt => {
   };
 };
 
-export const updateInputValue = value => {
+export const updateInputValue = inputValue => {
   return {
     type: "UPDATE_INPUT_VALUE",
-    value: value
+    inputValue: inputValue
   };
 };
 

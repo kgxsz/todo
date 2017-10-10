@@ -1,3 +1,5 @@
+import { validateInputValue } from "./utils";
+
 const initialState = {
   sortByDescAddedAt: false,
   itemsByAddedAt: {},
@@ -38,15 +40,11 @@ const appReducer = (state = initialState, action) => {
     case "UPDATE_INPUT_VALUE":
       return {
         ...state,
-        inputValue: action.value
+        inputValue: action.inputValue
       };
 
     case "ADD_ITEM_TO_ITEM_LIST":
-      let inputValueLength = state.inputValue.trim().length;
-      let validInputValue =
-        state.inputValue && inputValueLength > 0 && inputValueLength < 256;
-
-      if (validInputValue) {
+      if (validateInputValue(state.inputValue)) {
         let item = {
           addedAt: action.addedAt,
           value: state.inputValue,

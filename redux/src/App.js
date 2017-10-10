@@ -7,6 +7,7 @@ import {
   updateInputValue,
   addItemToItemList
 } from "./actions";
+import { validateInputValue } from "./utils";
 import checkboxSprite from "./checkbox-sprite.svg";
 import trashIcon from "./trash-icon.svg";
 import smileyIcon from "./smiley-icon.svg";
@@ -53,19 +54,15 @@ class ItemAdder extends Component {
 
 const ItemAdderContainer = connect(
   state => {
-    let inputValueLength = state.inputValue.trim().length;
-    let validInputValue =
-      state.inputValue && inputValueLength > 0 && inputValueLength < 256;
-
     return {
-      validInputValue: validInputValue,
+      validInputValue: validateInputValue(state.inputValue),
       inputValue: state.inputValue
     };
   },
   dispatch => {
     return {
-      updateInputValue: value => {
-        dispatch(updateInputValue(value));
+      updateInputValue: inputValue => {
+        dispatch(updateInputValue(inputValue));
       },
       addItemToItemList: addedAt => {
         dispatch(addItemToItemList(addedAt));
