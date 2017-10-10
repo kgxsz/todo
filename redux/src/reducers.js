@@ -9,19 +9,7 @@ const sortByDescAddedAt = (state = true, action) => {
   }
 };
 
-let initialItem = {
-  addedAt: Date.now(),
-  value: "do something!",
-  checked: false
-};
-
-let initialItemsByAddedAt = {};
-initialItemsByAddedAt[initialItem.addedAt] = initialItem;
-
-let initialItemList = [];
-initialItemList.push(initialItem.addedAt);
-
-const itemsByAddedAt = (state = initialItemsByAddedAt, action) => {
+const itemsByAddedAt = (state = {}, action) => {
   switch (action.type) {
     case "TOGGLE_ITEM_CHECKED":
       return {
@@ -45,7 +33,7 @@ const itemsByAddedAt = (state = initialItemsByAddedAt, action) => {
   }
 };
 
-const itemList = (state = initialItemList, action) => {
+const itemList = (state = [], action) => {
   switch (action.type) {
     case "DELETE_ITEM":
       let index = state.indexOf(action.addedAt);
