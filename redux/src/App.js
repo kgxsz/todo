@@ -12,6 +12,7 @@ class Item extends Component {
     let checkboxSpriteClassName = this.props.checked
       ? "Item__checkbox__sprite Item__checkbox__sprite--shifted"
       : "Item__checkbox__sprite";
+
     return (
       <li className="Item">
         <button

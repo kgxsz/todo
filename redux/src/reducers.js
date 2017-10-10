@@ -32,7 +32,9 @@ const itemsByAddedAt = (state = initialItemsByAddedAt, action) => {
         }
       };
     case "DELETE_ITEM":
-      return {};
+      let itemsByAddedAt = Object.assign({}, state);
+      delete itemsByAddedAt[action.addedAt];
+      return itemsByAddedAt;
     default:
       return state;
   }
@@ -41,7 +43,8 @@ const itemsByAddedAt = (state = initialItemsByAddedAt, action) => {
 const itemList = (state = initialItemList, action) => {
   switch (action.type) {
     case "DELETE_ITEM":
-      return [];
+      let index = state.indexOf(action.addedAt);
+      return [...state.slice(0, index), ...state.slice(index + 1)];
     default:
       return state;
   }
