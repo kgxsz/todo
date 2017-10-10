@@ -1,11 +1,106 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { sortByDescAddedAt, toggleItemChecked, deleteItem } from "./actions";
+import {
+  sortByDescAddedAt,
+  toggleItemChecked,
+  deleteItem,
+  updateInputValue,
+  addItemToItemList
+} from "./actions";
 import checkboxSprite from "./checkbox-sprite.svg";
 import trashIcon from "./trash-icon.svg";
 import smileyIcon from "./smiley-icon.svg";
 import sortIcon from "./sort-icon.svg";
 import "./App.css";
+
+class ItemAdder extends Component {
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     inputValue: ""
+  //   };
+  //   this.validateInputValue = this.validateInputValue.bind(this);
+  //   this.buttonClassName = this.buttonClassName.bind(this);
+  //   this.handleChange = this.handleChange.bind(this);
+  //   this.handleSubmit = this.handleSubmit.bind(this);
+  // }
+  //
+
+  // handleSubmit(e) {
+  //   let { inputValue } = this.state;
+  //   let { addItemToItemList } = this.props;
+  //   if (this.validateInputValue()) {
+  //     this.setState({ inputValue: "" });
+  //     addItemToItemList(inputValue);
+  //   } else {
+  //     console.error("Attempted to handle submit with invalid inputValue");
+  //   }
+  //   e.preventDefault();
+  // }
+
+  render() {
+    let buttonClassName = this.props.validInputValue
+      ? "ItemAdder__button"
+      : "ItemAdder__button ItemAdder__button--disabled";
+
+    return (
+      <form
+        onSubmit={e => {
+          if (this.props.validInputValue) {
+            let item = {
+              addedAt: Date.now(),
+              value: this.props.inputValue,
+              checked: false
+            };
+            this.props.addItemToItemList(item);
+          }
+          e.preventDefault();
+        }}
+        className="ItemAdder"
+      >
+        <input
+          className="ItemAdder__input"
+          type="text"
+          value={this.props.inputValue}
+          placeholder="add an item here"
+          onChange={e => {
+            this.props.updateInputValue(e.target.value);
+            e.preventDefault();
+          }}
+        />
+        <input
+          className={buttonClassName}
+          type="submit"
+          value="add"
+          disabled={!this.props.validInputValue}
+        />
+      </form>
+    );
+  }
+}
+
+const ItemAdderContainer = connect(
+  state => {
+    let inputValueLength = state.inputValue.trim().length;
+    let validInputValue =
+      state.inputValue && inputValueLength > 0 && inputValueLength < 256;
+
+    return {
+      validInputValue: validInputValue,
+      inputValue: state.inputValue
+    };
+  },
+  dispatch => {
+    return {
+      updateInputValue: value => {
+        dispatch(updateInputValue(value));
+      },
+      addItemToItemList: item => {
+        dispatch(addItemToItemList(item));
+      }
+    };
+  }
+)(ItemAdder);
 
 class Item extends Component {
   render() {
@@ -45,7 +140,7 @@ class ItemList extends Component {
             <div className="ItemList__options__divider" />
             <button
               className="ItemList__options__sort"
-              onClick={this.props.onToggleSortByDescAddedAtClick}
+              onClick={this.props.toggleSortByDescAddedAt}
             >
               <img src={sortIcon} alt="sort" />
             </button>
@@ -63,15 +158,15 @@ class ItemList extends Component {
         )}
         {!this.props.emptyList && (
           <ul>
-            {this.props.itemList.map(addedAt => (
+            {this.props.items.map(item => (
               <Item
-                key={addedAt.toString()}
-                {...this.props.itemsByAddedAt[addedAt]}
+                key={item.addedAt.toString()}
+                {...item}
                 toggleItemChecked={() => {
-                  this.props.toggleItemChecked(addedAt);
+                  this.props.toggleItemChecked(item.addedAt);
                 }}
                 deleteItem={() => {
-                  this.props.deleteItem(addedAt);
+                  this.props.deleteItem(item.addedAt);
                 }}
               />
             ))}
@@ -86,9 +181,7 @@ const ItemListContainer = connect(
   state => {
     return {
       emptyList: state.itemList.length < 1,
-      sortByDescAddedAt: state.sortByDescAddedAt,
-      itemList: state.itemList,
-      itemsByAddedAt: state.itemsByAddedAt
+      items: state.itemList.map(addedAt => state.itemsByAddedAt[addedAt])
     };
   },
   dispatch => {
@@ -116,10 +209,7 @@ class App extends Component {
         </div>
         <div className="App__body">
           <div className="App__body__divider" />
-          {/* <ItemAdder
-            validateItemValue={this.validateItemValue}
-            addItemToItemList={this.addItemToItemList}
-          /> */}
+          <ItemAdderContainer />
           <div className="App__body__divider" />
           <ItemListContainer />
         </div>

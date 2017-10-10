@@ -17,3 +17,17 @@ export const deleteItem = addedAt => {
     addedAt: addedAt
   };
 };
+
+export const updateInputValue = value => {
+  return {
+    type: "UPDATE_INPUT_VALUE",
+    value: value
+  };
+};
+
+export const addItemToItemList = item => {
+  return {
+    type: "ADD_ITEM_TO_ITEM_LIST",
+    item: item
+  };
+};
