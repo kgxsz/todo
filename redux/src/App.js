@@ -14,30 +14,6 @@ import sortIcon from "./sort-icon.svg";
 import "./App.css";
 
 class ItemAdder extends Component {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     inputValue: ""
-  //   };
-  //   this.validateInputValue = this.validateInputValue.bind(this);
-  //   this.buttonClassName = this.buttonClassName.bind(this);
-  //   this.handleChange = this.handleChange.bind(this);
-  //   this.handleSubmit = this.handleSubmit.bind(this);
-  // }
-  //
-
-  // handleSubmit(e) {
-  //   let { inputValue } = this.state;
-  //   let { addItemToItemList } = this.props;
-  //   if (this.validateInputValue()) {
-  //     this.setState({ inputValue: "" });
-  //     addItemToItemList(inputValue);
-  //   } else {
-  //     console.error("Attempted to handle submit with invalid inputValue");
-  //   }
-  //   e.preventDefault();
-  // }
-
   render() {
     let buttonClassName = this.props.validInputValue
       ? "ItemAdder__button"
