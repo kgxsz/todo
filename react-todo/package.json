@@ -1,0 +1,29 @@
+{
+  "name": "react-todo",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "flow-bin": "^0.53.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.0.4",
+    "normalize.css": "^7.0.0",
+    "prettier": "^1.5.3",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-scripts": "1.0.12"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "precommit": "lint-staged",
+    "flow": "flow",
+    "eject": "react-scripts eject"
+  }
+}

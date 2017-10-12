@@ -1,0 +1,39 @@
+<svg id="sort-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: rgba(0,0,0,0);
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke: #2b2b2b;
+      }
+
+      .cls-2, .cls-3 {
+        stroke-width: 3px;
+      }
+
+      .cls-3, .cls-4 {
+        fill: none;
+      }
+
+      .cls-4 {
+        stroke-width: 2px;
+      }
+
+      .cls-5 {
+        fill: #2b2b2b;
+      }
+    </style>
+  </defs>
+  <path id="Path_1" data-name="Path 1" class="cls-1" d="M0,0H80V80H0Z"/>
+  <path id="Path_2" data-name="Path 2" class="cls-2" d="M0,0V15.5" transform="translate(56 32.5) rotate(90)"/>
+  <line id="Line_2" data-name="Line 2" class="cls-3" y2="15.5" transform="translate(56 37.5) rotate(90)"/>
+  <line id="Line_3" data-name="Line 3" class="cls-3" y2="15.5" transform="translate(56 42.5) rotate(90)"/>
+  <line id="Line_5" data-name="Line 5" class="cls-3" y2="15.5" transform="translate(56 47.5) rotate(90)"/>
+  <line id="Line_6" data-name="Line 6" class="cls-3" y2="15.5" transform="translate(56 52.5) rotate(90)"/>
+  <line id="Line_7" data-name="Line 7" class="cls-4" y2="24" transform="translate(35 32)"/>
+  <path id="Path_3" data-name="Path 3" class="cls-5" d="M-2-5h0L1,1H-5Z" transform="translate(37 32)"/>
+  <line id="Line_8" data-name="Line 8" class="cls-4" y2="24" transform="matrix(-1, -0.017, 0.017, -1, 27.834, 50.999)"/>
+  <path id="Path_4" data-name="Path 4" class="cls-5" d="M-2-5h0L1,1H-5Z" transform="matrix(-1, -0.017, 0.017, -1, 25.835, 50.964)"/>
+</svg>
