@@ -1,16 +1,26 @@
 (ns re-frame-todo.views
-  (:require [re-frame.core :as re-frame]))
+  (:require [re-frame.core :as re-frame]
+            [re-frame-todo.schema :as schema]
+            [cljs.spec.alpha :as spec]))
 
 (defn item-adder []
-  (let [!input-value (re-frame/subscribe [:input-value])]
+  (let [!input-value (re-frame/subscribe [:input-value])
+        add-item-to-item-list (fn [e]
+                                (let [added-at (.now js/Date)]
+                                  (re-frame/dispatch [:add-item-to-item-list added-at]))
+                                (.preventDefault e))
+        update-input-value (fn [e]
+                             (let [input-value (-> e .-target .-value)]
+                               (re-frame/dispatch [:update-input-value input-value])))]
     (fn []
-      (let [valid-input-value? false]
+      (let [valid-input-value? (spec/valid? ::schema/text @!input-value)]
         [:form.item-adder
+         {:on-submit add-item-to-item-list}
          [:input.item-adder__input
           {:type :text
            :value @!input-value
            :placeholder "add an item here"
-           :on-change (fn [])}]
+           :on-change update-input-value}]
          [:input.item-adder__button
           {:class (when-not valid-input-value? "item-adder__button--disabled")
            :type :submit
@@ -20,11 +30,11 @@
 (defn item [added-at]
   (let [!item (re-frame/subscribe [:item added-at])]
     (fn []
-      (let [{:keys [text checked]} @!item]
+      (let [{:keys [text checked?]} @!item]
         [:li.item
          [:button.item__checkbox
           [:img.item__checkbox__sprite
-           {:class (when checked "item__checkbox__sprite--shifted")
+           {:class (when checked? "item__checkbox__sprite--shifted")
             :alt :checkbox
             :src "images/checkbox-sprite.svg"}]]
          [:div.item__text

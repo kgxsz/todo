@@ -10,8 +10,7 @@
 (re-frame/reg-sub
  :item
  (fn [db [_ added-at]]
-   (get-in db [:items-by-added-at added-at]))
- )
+   (get-in db [:items-by-added-at added-at])))
 
 (re-frame/reg-sub
  :input-value
