@@ -6,7 +6,6 @@
             [re-frame-todo.views :as views]
             [re-frame-todo.config :as config]))
 
-
 (defn dev-setup []
   (when config/debug?
     (enable-console-print!)
