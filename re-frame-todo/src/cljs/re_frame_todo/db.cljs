@@ -6,7 +6,7 @@
                                       :text "first item"
                                       :checked true}
                        1507978691274 {:added-at 1507978691274
-                                      :text "first item"
+                                      :text "second item"
                                       :checked false}}
    :item-list [1507978708423
                1507978691274]

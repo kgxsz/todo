@@ -4,15 +4,21 @@
 
 (re-frame/reg-sub
  :item-list
- (fn [db]
-   (mapv #(get-in db [:items-by-added-at %]) (:item-list db))))
+ (fn [db _]
+   (:item-list db)))
+
+(re-frame/reg-sub
+ :item
+ (fn [db [_ added-at]]
+   (get-in db [:items-by-added-at added-at]))
+ )
 
 (re-frame/reg-sub
  :input-value
- (fn [db]
+ (fn [db _]
    (:input-value db)))
 
 (re-frame/reg-sub
  :sort-by-desc-added-at
- (fn [db]
+ (fn [db _]
    (:sort-by-desc-added-at db)))

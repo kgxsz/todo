@@ -502,13 +502,13 @@ body {
   border: 1.5px #2b2b2b solid;
 }
 
-.itemAdder {
+.item-adder {
   display: flex;
   width: 100%;
   margin-top: 25px;
 }
 
-.itemAdder__input {
+.item-adder__input {
   flex-grow: 1;
   display: block;
   height: 60px;
@@ -520,15 +520,15 @@ body {
   -webkit-appearance: none;
 }
 
-.itemAdder__input::placeholder {
+.item-adder__input::placeholder {
   color: #ababab;
 }
 
-.itemAdder__input:focus {
+.item-adder__input:focus {
   border-color: #2b2b2b;
 }
 
-.itemAdder__button {
+.item-adder__button {
   display: block;
   height: 60px;
   width: 80px;
@@ -542,34 +542,34 @@ body {
   -webkit-appearance: none;
 }
 
-.itemAdder__button--disabled {
+.item-adder__button--disabled {
   background-color: #ababab;
   cursor: default;
 }
 
-.itemList {
+.item-list {
   width: 100%;
 }
 
-.itemList__notice {
+.item-list__notice {
   margin-top: 25px;
   text-align: center;
   font-size: 16px;
   color: #ababab;
 }
 
-.itemList__notice__icon {
+.item-list__notice__icon {
   display: block;
   margin: auto;
   width: 200px;
 }
 
-.itemList__options {
+.item-list__options {
   display: flex;
   align-items: center;
 }
 
-.itemList__options__sort {
+.item-list__options__sort {
   width: 60px;
   border: none;
   background-color: transparent;
@@ -577,7 +577,7 @@ body {
   -webkit-appearance: none;
 }
 
-.itemList__options__divider {
+.item-list__options__divider {
   flex-grow: 1;
   height: 0;
   border: 1.5px #2b2b2b solid;
@@ -589,7 +589,7 @@ body {
   margin-top: 10px;
 }
 
-.item__value {
+.item__text {
   flex-grow: 1;
   display: flex;
   align-items: center;
