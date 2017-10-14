@@ -20,9 +20,9 @@
 
 (spec/def ::input-value string?)
 
-(spec/def ::sort-by-desc-added-at boolean?)
+(spec/def ::sort-by-desc-added-at? boolean?)
 
 (spec/def ::db (spec/keys :req-un [::items-by-added-at
                                    ::item-list
                                    ::input-value
-                                   ::sort-by-desc-added-at]))
+                                   ::sort-by-desc-added-at?]))

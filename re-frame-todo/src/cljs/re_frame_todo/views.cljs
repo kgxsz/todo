@@ -28,11 +28,16 @@
            :disabled (not valid-input-value?)}]]))))
 
 (defn item [added-at]
-  (let [!item (re-frame/subscribe [:item added-at])]
+  (let [!item (re-frame/subscribe [:item added-at])
+        toggle-item-checked? (fn []
+                               (re-frame/dispatch [:toggle-item-checked? added-at]))
+        delete-item (fn []
+                      (re-frame/dispatch [:delete-item added-at]))]
     (fn []
       (let [{:keys [text checked?]} @!item]
         [:li.item
          [:button.item__checkbox
+          {:on-click toggle-item-checked?}
           [:img.item__checkbox__sprite
            {:class (when checked? "item__checkbox__sprite--shifted")
             :alt :checkbox
@@ -40,12 +45,15 @@
          [:div.item__text
           text]
          [:button.item__trash
+          {:on-click delete-item}
           [:img
            {:alt :trash
             :src "images/trash-icon.svg"}]]]))))
 
 (defn item-list []
-  (let [!item-list (re-frame/subscribe [:item-list])]
+  (let [!item-list (re-frame/subscribe [:item-list])
+        toggle-sort-items-by-desc-added-at? (fn []
+                                              (re-frame/dispatch [:toggle-sort-item-by-desc-added-at?]))]
     (fn []
       (if (empty? @!item-list)
         [:div.item-list
@@ -59,6 +67,7 @@
          [:div.item-list__options
           [:div.item-list__options__divider]
           [:button.item-list__options__sort
+           {:on-click toggle-sort-items-by-desc-added-at?}
            [:img
             {:alt :sort
              :src "images/sort-icon.svg"}]]]
