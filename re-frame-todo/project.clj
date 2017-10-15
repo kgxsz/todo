@@ -18,36 +18,33 @@
   :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
   :aliases {"dev" ["do" "clean"
-                        ["pdo" ["figwheel" "dev"]]]
+                   ["pdo" ["figwheel" "dev"]]]
             "build" ["do" "clean"
-                          ["cljsbuild" "once" "min"]]}
+                     ["cljsbuild" "once" "min"]]}
 
-  :profiles
-  {:dev
-   {:dependencies [[binaryage/devtools "0.9.4"]
-                   [figwheel-sidecar "0.5.13"]
-                   [com.cemerick/piggieback "0.2.2"]]
+  :profiles {:dev
+             {:dependencies [[binaryage/devtools "0.9.4"]
+                             [figwheel-sidecar "0.5.13"]
+                             [com.cemerick/piggieback "0.2.2"]]
 
-    :plugins      [[lein-figwheel "0.5.13"]
-                   [lein-pdo "0.1.1"]]}}
+              :plugins      [[lein-figwheel "0.5.13"]
+                             [lein-pdo "0.1.1"]]}}
 
-  :cljsbuild
-  {:builds
-   [{:id           "dev"
-     :source-paths ["src/cljs"]
-     :figwheel     {:on-jsload "re-frame-todo.core/mount-root"}
-     :compiler     {:main                 re-frame-todo.core
-                    :output-to            "resources/public/js/compiled/app.js"
-                    :output-dir           "resources/public/js/compiled/out"
-                    :asset-path           "js/compiled/out"
-                    :source-map-timestamp true
-                    :preloads             [devtools.preload]
-                    :external-config      {:devtools/config {:features-to-install :all}}}}
+  :cljsbuild {:builds [{:id           "dev"
+                        :source-paths ["src/cljs"]
+                        :figwheel     {:on-jsload "re-frame-todo.core/mount-root"}
+                        :compiler     {:main                 re-frame-todo.core
+                                       :output-to            "resources/public/js/compiled/app.js"
+                                       :output-dir           "resources/public/js/compiled/out"
+                                       :asset-path           "js/compiled/out"
+                                       :source-map-timestamp true
+                                       :preloads             [devtools.preload]
+                                       :external-config      {:devtools/config {:features-to-install :all}}}}
 
-    {:id           "min"
-     :source-paths ["src/cljs"]
-     :compiler     {:main            re-frame-todo.core
-                    :output-to       "resources/public/js/compiled/app.js"
-                    :optimizations   :advanced
-                    :closure-defines {goog.DEBUG false}
-                    :pretty-print    false}}]})
+                       {:id           "min"
+                        :source-paths ["src/cljs"]
+                        :compiler     {:main            re-frame-todo.core
+                                       :output-to       "resources/public/js/compiled/app.js"
+                                       :optimizations   :advanced
+                                       :closure-defines {goog.DEBUG false}
+                                       :pretty-print    false}}]})
