@@ -2,8 +2,7 @@
   (:require [cljs.spec.alpha :as spec]
             [re-frame.core :as re-frame]
             [re-frame-todo.db :as db]
-            [re-frame-todo.schema :as schema]
-            [medley.core :as medley]))
+            [re-frame-todo.schema :as schema]))
 
 (def schema-interceptor (re-frame/after (fn [db]
                                           (when-not (spec/valid? ::schema/db db)
@@ -47,7 +46,7 @@
  [schema-interceptor]
  (fn [db [_ added-at]]
    (-> db
-       (medley/dissoc-in [:items-by-added-at added-at])
+       (update :items-by-added-at dissoc added-at)
        (update :item-list #(remove (partial = added-at) %)))))
 
 (re-frame/reg-event-db
