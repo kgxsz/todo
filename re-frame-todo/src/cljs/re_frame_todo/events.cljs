@@ -43,7 +43,7 @@
    (update-in db [:items-by-added-at added-at :checked?] not)))
 
 (re-frame/reg-event-db
- :delete-item
+ :delete-item-from-item-list
  [schema-interceptor]
  (fn [db [_ added-at]]
    (-> db

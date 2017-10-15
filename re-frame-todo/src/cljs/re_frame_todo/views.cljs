@@ -31,8 +31,8 @@
   (let [!item (re-frame/subscribe [:item added-at])
         toggle-item-checked? (fn []
                                (re-frame/dispatch [:toggle-item-checked? added-at]))
-        delete-item (fn []
-                      (re-frame/dispatch [:delete-item added-at]))]
+        delete-item-from-item-list (fn []
+                                     (re-frame/dispatch [:delete-item-from-item-list added-at]))]
     (fn []
       (let [{:keys [text checked?]} @!item]
         [:li.item
@@ -45,7 +45,7 @@
          [:div.item__text
           text]
          [:button.item__trash
-          {:on-click delete-item}
+          {:on-click delete-item-from-item-list}
           [:img
            {:alt :trash
             :src "images/trash-icon.svg"}]]]))))
