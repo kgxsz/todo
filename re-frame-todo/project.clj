@@ -1,7 +1,6 @@
 (defproject re-frame-todo "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.908"]
-                 [medley "1.0.0"]
                  [reagent "0.7.0"]
                  [re-frame "0.10.1"]]
 
