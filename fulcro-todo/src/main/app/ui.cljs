@@ -17,6 +17,7 @@
              (dom/input
               #js {:className "item-adder__input"
                    :type "text"
+                   :placeholder "add an item here"
                    :value input-value})
              (dom/input
               #js {:className (if valid-input-value?
