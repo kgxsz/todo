@@ -29,19 +29,56 @@
 
 (def ui-item-adder (om/factory ItemAdder))
 
+(defui ^:once Item
+  static
+  fc/InitialAppState
+  (initial-state [c {:keys [added-at text]}] {:added-at added-at
+                                              :text text
+                                              :checked? false})
+  Object
+  (render [this]
+          (let [{:keys [added-at text checked?]} (om/props this)]
+            (dom/li
+             #js {:className "item"}
+
+             (dom/button
+              #js {:className "item__checkbox"}
+              (dom/img
+               #js {:className (if checked?
+                                 "item__checkbox__sprite item__checkbox__sprite--shifted"
+                                 "item__checkbox__sprite")
+                    :alt "checkbox"
+                    :src "images/checkbox-sprite.svg"}))
+
+             (dom/div
+              #js {:className "item__text"}
+              text)
+
+             (dom/button
+              #js {:className "item__trash"}
+              (dom/img
+               #js {:alt "trashx"
+                    :src "images/trash-icon.svg"}))))))
+
+(def ui-item (om/factory Item))
+
 (defui ^:once ItemList
   static
   fc/InitialAppState
   (initial-state [c params] {:items-by-added-at {1508175827181 {:added-at 1508175827181
-                                                                :text "hello"
-                                                                :checked? false}
+                                                                :text "hello"}
                                                  1508175970713 {:added-at 1508175970713
-                                                                :text "world"
-                                                                :checked? true}}
-                             :item-list '(1508175827181 1508175970713)})
+                                                                :text "world"}}
+                             :item-list '(1508175827181 1508175970713)
+                             :items [(fc/get-initial-state Item {:added-at 1508175827181
+                                                                 :text "hello"
+                                                                 :checked? false})
+                                     (fc/get-initial-state Item {:added-at 1508175970713
+                                                                 :text "world"
+                                                                 :checked? true})]})
   Object
   (render [this]
-          (let [{:keys [items-by-added-at item-list]} (om/props this)]
+          (let [{:keys [items-by-added-at item-list items]} (om/props this)]
             (if (empty? item-list)
               (dom/div
                #js {:className "item-list"}
@@ -59,12 +96,13 @@
                 (dom/div
                  #js {:className "item-list__options__divider"})
                 (dom/button
-                 #js {:className "item-list__options__sort"
-                      :alt "smiley"
-                      :src "images/smiley-icon.svg"}
+                 #js {:className "item-list__options__sort"}
                  (dom/img
                   #js {:alt "sort"
-                       :src "images/sort-icon.svg"}))))))))
+                       :src "images/sort-icon.svg"})))
+               (dom/ul
+                nil
+                (map ui-item items)))))))
 
 (def ui-item-list (om/factory ItemList))
 
