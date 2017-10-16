@@ -5,7 +5,7 @@
 
 (defonce app (atom (fc/new-fulcro-client)))
 
-(defui ui-app
+(defui App
   Object
   (render [this]
           (dom/div nil "Hello World.")))
