@@ -6,11 +6,11 @@
 (defui ^:once ItemAdder
   static
   fc/InitialAppState
-  (initial-state [c params] {:input-value ""
-                             :valid-input-value? false})
+  (initial-state [c params] {:item-adder/input-value ""})
   Object
   (render [this]
-          (let [{:keys [input-value valid-input-value?]} (om/props this)]
+          (let [{:keys [item-adder/input-value]} (om/props this)
+                valid-input-value? false]
             (dom/form
              #js {:className "item-adder"
                   :onSubmit #(.preventDefault %)}
@@ -32,12 +32,12 @@
 (defui ^:once Item
   static
   fc/InitialAppState
-  (initial-state [c {:keys [added-at text]}] {:added-at added-at
-                                              :text text
-                                              :checked? false})
+  (initial-state [c {:keys [added-at text]}] {:item/added-at added-at
+                                              :item/text text
+                                              :item/checked? false})
   Object
   (render [this]
-          (let [{:keys [added-at text checked?]} (om/props this)]
+          (let [{:keys [item/added-at item/text item/checked?]} (om/props this)]
             (dom/li
              #js {:className "item"}
 
@@ -65,21 +65,16 @@
 (defui ^:once ItemList
   static
   fc/InitialAppState
-  (initial-state [c params] {:items-by-added-at {1508175827181 {:added-at 1508175827181
-                                                                :text "hello"}
-                                                 1508175970713 {:added-at 1508175970713
-                                                                :text "world"}}
-                             :item-list '(1508175827181 1508175970713)
-                             :items [(fc/get-initial-state Item {:added-at 1508175827181
-                                                                 :text "hello"
-                                                                 :checked? false})
-                                     (fc/get-initial-state Item {:added-at 1508175970713
-                                                                 :text "world"
-                                                                 :checked? true})]})
+  (initial-state [c params] {:item-list/items [(fc/get-initial-state Item {:added-at 1508175827181
+                                                                           :text "hello"
+                                                                           :checked? false})
+                                               (fc/get-initial-state Item {:added-at 1508175970713
+                                                                           :text "world"
+                                                                           :checked? true})]})
   Object
   (render [this]
-          (let [{:keys [items-by-added-at item-list items]} (om/props this)]
-            (if (empty? item-list)
+          (let [{:keys [item-list/items]} (om/props this)]
+            (if (empty? items)
               (dom/div
                #js {:className "item-list"}
                (dom/div
@@ -109,13 +104,13 @@
 (defui ^:once App
   static
   fc/InitialAppState
-  (initial-state [c params] {:item-adder (fc/get-initial-state ItemAdder {})
-                             :item-list (fc/get-initial-state ItemList {})})
+  (initial-state [c params] {:app/item-adder (fc/get-initial-state ItemAdder {})
+                             :app/item-list (fc/get-initial-state ItemList {})})
 
   Object
   (render [this]
           (let [{:keys [ui/react-key]} (om/props this)
-                {:keys [item-adder item-list]} (fc/get-initial-state App {})]
+                {:keys [app/item-adder app/item-list]} (fc/get-initial-state App {})]
             (dom/div
              #js {:key react-key
                   :className "app"}
