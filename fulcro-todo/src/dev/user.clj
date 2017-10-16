@@ -20,6 +20,5 @@
      (reset! figwheel (component/system-map
                         :figwheel-system (fig/figwheel-system preferred-config)
                         :css-watcher (fig/css-watcher {:watch-paths ["resources/public/css"]})))
-     (println "STARTING FIGWHEEL ON BUILDS: " build-ids)
      (swap! figwheel component/start)
      (fig/cljs-repl (:figwheel-system @figwheel)))))
