@@ -55,12 +55,16 @@
               (dom/div
                #js {:className "item-list"}
                (dom/div
-                #js {:className "item-list__notice"}
-                (dom/img
-                 #js {:className "item-list__notice__icon"
+                #js {:className "item-list__options"}
+                (dom/div
+                 #js {:className "item-list__options__divider"})
+                (dom/button
+                 #js {:className "item-list__options__sort"
                       :alt "smiley"
-                      :src "images/smiley-icon.svg"})
-                "There are no items"))))))
+                      :src "images/smiley-icon.svg"}
+                 (dom/img
+                  #js {:alt "sort"
+                       :src "images/sort-icon.svg"}))))))))
 
 (def ui-item-list (om/factory ItemList))
 
