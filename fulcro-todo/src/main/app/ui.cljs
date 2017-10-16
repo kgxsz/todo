@@ -79,7 +79,7 @@
                                                                            :text "world"})]})
   Object
   (render [this]
-          (let [{:keys [item-list/items]} (om/props his)]
+          (let [{:keys [item-list/items]} (om/props this)]
             (if (empty? items)
               (dom/div
                #js {:className "item-list"}
