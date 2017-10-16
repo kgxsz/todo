@@ -23,6 +23,9 @@
                                :optimizations        :none}}]}
 
   :profiles {:dev {:source-paths ["src/dev" "src/main"]
+                   :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
                    :dependencies [[binaryage/devtools "0.9.4"]
+                                  [com.cemerick/piggieback "0.2.1"]
                                   [org.clojure/tools.namespace "0.3.0-alpha4"]
-                                  [figwheel-sidecar "0.5.13"]]}})
+                                  [figwheel-sidecar "0.5.13"]
+                                  [org.clojure/tools.nrepl "0.2.13"]]}})
