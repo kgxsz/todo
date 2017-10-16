@@ -4,6 +4,8 @@
             [fulcro.client.core :as fc]))
 
 (defui ^:once ItemAdder
+  static om/IQuery
+  (query [this] [:item-adder/input-value])
   static
   fc/InitialAppState
   (initial-state [c params] {:item-adder/input-value ""})
@@ -30,6 +32,8 @@
 (def ui-item-adder (om/factory ItemAdder))
 
 (defui ^:once Item
+  static om/IQuery
+  (query [this] [:item/added-at :item/text :item/checked?])
   static
   fc/InitialAppState
   (initial-state [c {:keys [added-at text]}] {:item/added-at added-at
@@ -63,9 +67,12 @@
 (def ui-item (om/factory Item))
 
 (defui ^:once ItemList
+  static om/IQuery
+  (query [this] [:item-list/sort-by-desc-added-at {:item-list/items (om/get-query Item)}])
   static
   fc/InitialAppState
-  (initial-state [c params] {:item-list/items [(fc/get-initial-state Item {:added-at 1508175827181
+  (initial-state [c params] {:item-list/sort-by-desc-added-at true
+                             :item-list/items [(fc/get-initial-state Item {:added-at 1508175827181
                                                                            :text "hello"
                                                                            :checked? false})
                                                (fc/get-initial-state Item {:added-at 1508175970713
@@ -102,15 +109,18 @@
 (def ui-item-list (om/factory ItemList))
 
 (defui ^:once App
+  static om/IQuery
+  (query [this] [:ui/react-key
+                 {:item-adder (om/get-query ItemAdder)}
+                 {:item-list (om/get-query ItemList)}])
   static
   fc/InitialAppState
-  (initial-state [c params] {:app/item-adder (fc/get-initial-state ItemAdder {})
-                             :app/item-list (fc/get-initial-state ItemList {})})
+  (initial-state [c params] {:item-adder (fc/get-initial-state ItemAdder {})
+                             :item-list (fc/get-initial-state ItemList {})})
 
   Object
   (render [this]
-          (let [{:keys [ui/react-key]} (om/props this)
-                {:keys [app/item-adder app/item-list]} (fc/get-initial-state App {})]
+          (let [{:keys [ui/react-key item-adder item-list]} (om/props this)]
             (dom/div
              #js {:key react-key
                   :className "app"}
