@@ -29,15 +29,51 @@
 
 (def ui-item-adder (om/factory ItemAdder))
 
+(defui ^:once ItemList
+  static
+  fc/InitialAppState
+  (initial-state [c params] {:items-by-added-at {1508175827181 {:added-at 1508175827181
+                                                                :text "hello"
+                                                                :checked? false}
+                                                 1508175970713 {:added-at 1508175970713
+                                                                :text "world"
+                                                                :checked? true}}
+                             :item-list '(1508175827181 1508175970713)})
+  Object
+  (render [this]
+          (let [{:keys [items-by-added-at item-list]} (om/props this)]
+            (if (empty? item-list)
+              (dom/div
+               #js {:className "item-list"}
+               (dom/div
+                #js {:className "item-list__notice"}
+                (dom/img
+                 #js {:className "item-list__notice__icon"
+                      :alt "smiley"
+                      :src "images/smiley-icon.svg"})
+                "There are no items"))
+              (dom/div
+               #js {:className "item-list"}
+               (dom/div
+                #js {:className "item-list__notice"}
+                (dom/img
+                 #js {:className "item-list__notice__icon"
+                      :alt "smiley"
+                      :src "images/smiley-icon.svg"})
+                "There are no items"))))))
+
+(def ui-item-list (om/factory ItemList))
+
 (defui ^:once App
   static
   fc/InitialAppState
-  (initial-state [c params] {:item-adder (fc/get-initial-state ItemAdder {})})
+  (initial-state [c params] {:item-adder (fc/get-initial-state ItemAdder {})
+                             :item-list (fc/get-initial-state ItemList {})})
 
   Object
   (render [this]
           (let [{:keys [ui/react-key]} (om/props this)
-                {:keys [item-adder]} (fc/get-initial-state App {})]
+                {:keys [item-adder item-list]} (fc/get-initial-state App {})]
             (dom/div
              #js {:key react-key
                   :className "app"}
@@ -55,4 +91,5 @@
                #js {:className "app__body__divider"})
               (ui-item-adder item-adder)
               (dom/div
-               #js {:className "app__body__divider"}))))))
+               #js {:className "app__body__divider"})
+              (ui-item-list item-list))))))
