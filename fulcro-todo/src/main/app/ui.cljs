@@ -4,10 +4,10 @@
             [om.next :as om :refer [defui]]))
 
 ; Create an application
-(defonce app-1 (atom (fc/new-fulcro-client)))
+(defonce app (atom (fc/new-fulcro-client)))
 
 ; Create a simple UI
-(defui Root
+(defui ui-app
   Object
   (render [this]
           (dom/div nil "Hello World.")))
