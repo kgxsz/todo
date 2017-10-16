@@ -21,5 +21,5 @@
 - To build and deploy, in the `redux-todo` directory, run `npm run build`, then `firebase deploy`.
 
 ## Re-Frame
-- For local development, from a cljs file in the `re-frame-todo` directory, do `cider-jack-in-clojurescript`.
+- For local development, from a cljs file in the `re-frame-todo` directory, via Cider `cider-jack-in-clojurescript`.
 - To build and deploy, in the `re-frame-todo` directory, run `lein build`, then `firebase deploy`.
