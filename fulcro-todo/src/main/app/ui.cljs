@@ -14,11 +14,13 @@
   Object
   (render [this]
           (let [{:keys [item-adder/input-value]} (om/props this)
-                {:keys [update-input-value!]} (om/get-computed this)
+                {:keys [add-item! update-input-value!]} (om/get-computed this)
                 valid-input-value? (spec/valid? :item/text input-value)]
             (dom/form
              #js {:className "item-adder"
-                  :onSubmit #(.preventDefault %)}
+                  :onSubmit #(do (when valid-input-value?
+                                   (add-item!))
+                                   (.preventDefault %))}
              (dom/input
               #js {:className "item-adder__input"
                    :type "text"
@@ -80,10 +82,10 @@
   (query [this] [{:item-list/items (om/get-query Item)}])
   static fc/InitialAppState
   (initial-state [c params] {:item-list/items [(fc/get-initial-state Item {:id 1
-                                                                           :added-at 1508175827181
+                                                                           :added-at (random-uuid)
                                                                            :text "hello"})
                                                (fc/get-initial-state Item {:id 2
-                                                                           :added-at 1508175970713
+                                                                           :added-at (random-uuid)
                                                                            :text "world"})]})
   Object
   (render [this]
@@ -137,6 +139,8 @@
   Object
   (render [this]
           (let [{:keys [ui/react-key item-adder item-list]} (om/props this)
+                add-item! (fn []
+                            (om/transact! this `[(ops/add-item! {})]))
                 update-input-value! (fn [{:keys [input-value]}]
                                       (om/transact! this `[(ops/update-input-value! {:input-value ~input-value})]))]
             (dom/div
@@ -154,7 +158,8 @@
               #js {:className "app__body"}
               (dom/div
                #js {:className "app__body__divider"})
-              (ui-item-adder (om/computed item-adder {:update-input-value! update-input-value!}))
+              (ui-item-adder (om/computed item-adder {:add-item! add-item!
+                                                      :update-input-value! update-input-value!}))
               (dom/div
                #js {:className "app__body__divider"})
               (ui-item-list item-list))))))
