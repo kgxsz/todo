@@ -7,6 +7,7 @@
 - [Elm Todo](https://elm.todo.keigo.io/).
 - [Redux Todo](https://redux.todo.keigo.io/).
 - [Re-Frame Todo](https://re-frame.todo.keigo.io/).
+- [Fulcro Todo](https://fulcro.todo.keigo.io/).
 
 ## React
 - For local development, in the `react-todo` directory, run `npm run start`.
@@ -23,3 +24,7 @@
 ## Re-Frame
 - For local development, from a cljs file in the `re-frame-todo` directory, via Cider `cider-jack-in-clojurescript`.
 - To build and deploy, in the `re-frame-todo` directory, run `lein build`, then `firebase deploy`.
+
+## Fulcro
+- For local development, from a cljs file in the `fulcro-todo` directory, via Cider `cider-jack-in-clojurescript`.
+- To build and deploy, in the `fulcro-todo` directory, run `lein build`, then `firebase deploy`.
