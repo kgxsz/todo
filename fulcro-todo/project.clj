@@ -11,6 +11,9 @@
 
   :plugins [[lein-cljsbuild "1.1.6"]]
 
+  :aliases {"build" ["do" "clean"
+                     ["cljsbuild" "once" "min"]]}
+
   :cljsbuild {:builds
               [{:id           "dev"
                 :source-paths ["src/main" "src/dev"]
@@ -20,7 +23,13 @@
                                :output-dir           "resources/public/js/app"
                                :preloads             [devtools.preload]
                                :asset-path           "js/app"
-                               :optimizations        :none}}]}
+                               :optimizations        :none}}
+               {:id           "min"
+                :source-paths ["src/main"]
+                :compiler     {:main            app.main
+                               :output-to       "resources/public/js/app.js"
+                               :optimizations   :advanced
+                               :pretty-print    false}}]}
 
   :profiles {:dev {:source-paths ["src/dev" "src/main"]
                    :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
