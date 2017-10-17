@@ -1,8 +1,10 @@
 (ns app.ui
   (:require [app.operations :as ops]
+            [app.schema :as schema]
+            [fulcro.client.core :as fc]
             [om.dom :as dom]
             [om.next :as om :refer [defui]]
-            [fulcro.client.core :as fc]))
+            [cljs.spec.alpha :as spec]))
 
 (defui ^:once ItemAdder
   static om/IQuery
@@ -13,7 +15,7 @@
   (render [this]
           (let [{:keys [item-adder/input-value]} (om/props this)
                 {:keys [update-input-value!]} (om/get-computed this)
-                valid-input-value? false]
+                valid-input-value? (spec/valid? :item/text input-value)]
             (dom/form
              #js {:className "item-adder"
                   :onSubmit #(.preventDefault %)}
