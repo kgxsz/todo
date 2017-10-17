@@ -12,10 +12,10 @@
 (defmutation delete-item!
   [{:keys [id]}]
   (action [{:keys [state]}]
-          (let [ident [:item/by-id id]
-                current-items (get-in @state [:item-list :item-list/items])
-                updated-items (vec (remove #(= ident %) current-items))]
-            (swap! state assoc-in [:item-list :item-list/items] updated-items))))
+          (let [remove-ident (fn [items] (vec (remove #(= [:item/by-id id] %) items)))]
+            (swap! state #(-> %
+                              (update-in [:item-list :item-list/items] remove-ident)
+                              (update :item/by-id dissoc id))))))
 
 (defmutation update-input-value!
   [{:keys [input-value]}]
