@@ -81,11 +81,11 @@
   static om/IQuery
   (query [this] [{:item-list/items (om/get-query Item)}])
   static fc/InitialAppState
-  (initial-state [c params] {:item-list/items [(fc/get-initial-state Item {:id 1
-                                                                           :added-at (random-uuid)
+  (initial-state [c params] {:item-list/items [(fc/get-initial-state Item {:id (random-uuid)
+                                                                           :added-at 1508175827181
                                                                            :text "hello"})
-                                               (fc/get-initial-state Item {:id 2
-                                                                           :added-at (random-uuid)
+                                               (fc/get-initial-state Item {:id (random-uuid)
+                                                                           :added-at 1508175970713
                                                                            :text "world"})]})
   Object
   (render [this]
