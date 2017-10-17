@@ -1,5 +1,6 @@
 (ns app.ui
-  (:require [om.dom :as dom]
+  (:require [app.operations :as ops]
+            [om.dom :as dom]
             [om.next :as om :refer [defui]]
             [fulcro.client.core :as fc]))
 
@@ -42,7 +43,8 @@
                                                  :item/checked? false})
   Object
   (render [this]
-          (let [{:keys [item/added-at item/text item/checked?]} (om/props this)]
+          (let [{:keys [db/id item/added-at item/text item/checked?]} (om/props this)
+                {:keys [delete-item]} (om/get-computed this)]
             (dom/li
              #js {:className "item"}
 
@@ -60,7 +62,8 @@
               text)
 
              (dom/button
-              #js {:className "item__trash"}
+              #js {:className "item__trash"
+                   :onClick #(delete-item {:id id})}
               (dom/img
                #js {:alt "trashx"
                     :src "images/trash-icon.svg"}))))))
@@ -79,7 +82,9 @@
                                                                            :text "world"})]})
   Object
   (render [this]
-          (let [{:keys [item-list/items]} (om/props this)]
+          (let [{:keys [item-list/items]} (om/props this)
+                delete-item (fn [{:keys [id]}]
+                              (om/transact! this `[(ops/delete-item {:id ~id})]))]
             (if (empty? items)
               (dom/div
                #js {:className "item-list"}
@@ -103,7 +108,10 @@
                        :src "images/sort-icon.svg"})))
                (dom/ul
                 nil
-                (map ui-item items)))))))
+                (map
+                 (fn [item]
+                   (ui-item (om/computed item {:delete-item delete-item})))
+                 items)))))))
 
 (def ui-item-list (om/factory ItemList))
 
