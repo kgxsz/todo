@@ -81,19 +81,17 @@
   static om/IQuery
   (query [this] [{:item-list/items (om/get-query Item)}])
   static fc/InitialAppState
-  (initial-state [c params] {:item-list/items [(fc/get-initial-state Item {:id (random-uuid)
-                                                                           :added-at 1508175827181
-                                                                           :text "hello"})
-                                               (fc/get-initial-state Item {:id (random-uuid)
-                                                                           :added-at 1508175970713
-                                                                           :text "world"})]})
+  (initial-state [c params] {:item-list/sort-by-desc-added-at? true
+                             :item-list/items []})
   Object
   (render [this]
           (let [{:keys [item-list/items]} (om/props this)
+                toggle-sort-by-desc-added-at! (fn []
+                                                (om/transact! this `[(ops/toggle-sort-by-desc-added-at! {})]))
                 toggle-item-checked?! (fn [{:keys [id]}]
-                             (om/transact! this `[(ops/toggle-item-checked?! {:id ~id})]))
+                                        (om/transact! this `[(ops/toggle-item-checked?! {:id ~id})]))
                 delete-item! (fn [{:keys [id]}]
-                              (om/transact! this `[(ops/delete-item! {:id ~id})]))]
+                               (om/transact! this `[(ops/delete-item! {:id ~id})]))]
             (if (empty? items)
               (dom/div
                #js {:className "item-list"}
@@ -112,7 +110,8 @@
                 (dom/div
                  #js {:className "item-list__options__divider"})
                 (dom/button
-                 #js {:className "item-list__options__sort"}
+                 #js {:className "item-list__options__sort"
+                      :onClick toggle-sort-by-desc-added-at!}
                  (dom/img
                   #js {:alt "sort"
                        :src "images/sort-icon.svg"})))
