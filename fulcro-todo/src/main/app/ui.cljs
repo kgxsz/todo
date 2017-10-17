@@ -44,12 +44,13 @@
   Object
   (render [this]
           (let [{:keys [db/id item/added-at item/text item/checked?]} (om/props this)
-                {:keys [delete-item]} (om/get-computed this)]
+                {:keys [check-item delete-item]} (om/get-computed this)]
             (dom/li
              #js {:className "item"}
 
              (dom/button
-              #js {:className "item__checkbox"}
+              #js {:className "item__checkbox"
+                   :onClick #(check-item {:id id})}
               (dom/img
                #js {:className (if checked?
                                  "item__checkbox__sprite item__checkbox__sprite--shifted"
@@ -83,6 +84,8 @@
   Object
   (render [this]
           (let [{:keys [item-list/items]} (om/props this)
+                check-item (fn [{:keys [id]}]
+                             (om/transact! this `[(ops/check-item {:id ~id})]))
                 delete-item (fn [{:keys [id]}]
                               (om/transact! this `[(ops/delete-item {:id ~id})]))]
             (if (empty? items)
@@ -95,6 +98,7 @@
                       :alt "smiley"
                       :src "images/smiley-icon.svg"})
                 "There are no items"))
+
               (dom/div
                #js {:className "item-list"}
                (dom/div
@@ -106,11 +110,13 @@
                  (dom/img
                   #js {:alt "sort"
                        :src "images/sort-icon.svg"})))
+
                (dom/ul
                 nil
                 (map
                  (fn [item]
-                   (ui-item (om/computed item {:delete-item delete-item})))
+                   (ui-item (om/computed item {:check-item check-item
+                                               :delete-item delete-item})))
                  items)))))))
 
 (def ui-item-list (om/factory ItemList))

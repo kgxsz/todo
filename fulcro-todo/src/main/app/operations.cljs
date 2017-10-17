@@ -1,6 +1,11 @@
 (ns app.operations
   (:require [fulcro.client.mutations :as m :refer [defmutation]]))
 
+(defmutation check-item
+  [{:keys [id]}]
+  (action [{:keys [state]}]
+          (swap! state update-in [:item/by-id id :item/checked?] not)))
+
 (defmutation delete-item
   [{:keys [id]}]
   (action [{:keys [state]}]
