@@ -12,6 +12,7 @@
   Object
   (render [this]
           (let [{:keys [item-adder/input-value]} (om/props this)
+                {:keys [update-input-value!]} (om/get-computed this)
                 valid-input-value? false]
             (dom/form
              #js {:className "item-adder"
@@ -20,7 +21,8 @@
               #js {:className "item-adder__input"
                    :type "text"
                    :placeholder "add an item here"
-                   :value input-value})
+                   :value input-value
+                   :onChange #(update-input-value! {:input-value input-value})})
              (dom/input
               #js {:className (if valid-input-value?
                                 "item-adder__button"
@@ -132,7 +134,9 @@
 
   Object
   (render [this]
-          (let [{:keys [ui/react-key item-adder item-list]} (om/props this)]
+          (let [{:keys [ui/react-key item-adder item-list]} (om/props this)
+                update-input-value! (fn [{:keys [input-value]}]
+                                      (om/transact! this `[(ops/update-input-value! {:input-value ~input-value})]))]
             (dom/div
              #js {:key react-key
                   :className "app"}
@@ -148,7 +152,7 @@
               #js {:className "app__body"}
               (dom/div
                #js {:className "app__body__divider"})
-              (ui-item-adder item-adder)
+              (ui-item-adder (om/computed item-adder {:update-input-value! update-input-value!}))
               (dom/div
                #js {:className "app__body__divider"})
               (ui-item-list item-list))))))

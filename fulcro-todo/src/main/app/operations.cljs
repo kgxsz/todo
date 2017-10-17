@@ -13,3 +13,8 @@
                 strip-fk (fn [old-fks]
                            (vec (remove #(= ident-to-remove %) old-fks)))]
             (swap! state update-in [:item-list :item-list/items] strip-fk))))
+
+(defmutation update-input-value!
+  [{:keys [input-value]}]
+  (action [{:keys [state]}]
+          (swap! state assoc-in [:item-adder :item-adder/input-value] input-value)))
