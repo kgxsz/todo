@@ -44,13 +44,13 @@
   Object
   (render [this]
           (let [{:keys [db/id item/added-at item/text item/checked?]} (om/props this)
-                {:keys [toggle-item-checked delete-item]} (om/get-computed this)]
+                {:keys [toggle-item-checked?! delete-item!]} (om/get-computed this)]
             (dom/li
              #js {:className "item"}
 
              (dom/button
               #js {:className "item__checkbox"
-                   :onClick #(toggle-item-checked {:id id})}
+                   :onClick #(toggle-item-checked?! {:id id})}
               (dom/img
                #js {:className (if checked?
                                  "item__checkbox__sprite item__checkbox__sprite--shifted"
@@ -64,7 +64,7 @@
 
              (dom/button
               #js {:className "item__trash"
-                   :onClick #(delete-item {:id id})}
+                   :onClick #(delete-item! {:id id})}
               (dom/img
                #js {:alt "trashx"
                     :src "images/trash-icon.svg"}))))))
@@ -84,10 +84,10 @@
   Object
   (render [this]
           (let [{:keys [item-list/items]} (om/props this)
-                toggle-item-checked (fn [{:keys [id]}]
-                             (om/transact! this `[(ops/toggle-item-checked {:id ~id})]))
-                delete-item (fn [{:keys [id]}]
-                              (om/transact! this `[(ops/delete-item {:id ~id})]))]
+                toggle-item-checked?! (fn [{:keys [id]}]
+                             (om/transact! this `[(ops/toggle-item-checked?! {:id ~id})]))
+                delete-item! (fn [{:keys [id]}]
+                              (om/transact! this `[(ops/delete-item! {:id ~id})]))]
             (if (empty? items)
               (dom/div
                #js {:className "item-list"}
@@ -115,8 +115,8 @@
                 nil
                 (map
                  (fn [item]
-                   (ui-item (om/computed item {:toggle-item-checked toggle-item-checked
-                                               :delete-item delete-item})))
+                   (ui-item (om/computed item {:toggle-item-checked?! toggle-item-checked?!
+                                               :delete-item! delete-item!})))
                  items)))))))
 
 (def ui-item-list (om/factory ItemList))
