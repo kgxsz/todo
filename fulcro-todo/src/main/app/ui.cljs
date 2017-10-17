@@ -22,7 +22,7 @@
                    :type "text"
                    :placeholder "add an item here"
                    :value input-value
-                   :onChange #(update-input-value! {:input-value input-value})})
+                   :onChange #(update-input-value! {:input-value (-> % .-target .-value)})})
              (dom/input
               #js {:className (if valid-input-value?
                                 "item-adder__button"
