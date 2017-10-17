@@ -16,8 +16,8 @@
 (spec/def ::items-by-added-at (spec/and map?
                                         (spec/map-of ::added-at ::item)))
 
-(spec/def :item-list (spec/coll-of ::added-at))
+(spec/def ::item-list (spec/coll-of ::added-at))
 
 (spec/def :item-adder/input-value string?)
 
-(spec/def :sort-by-desc-added-at? boolean?)
+(spec/def ::sort-by-desc-added-at? boolean?)
