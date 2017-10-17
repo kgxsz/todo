@@ -4,10 +4,7 @@
 (defmutation toggle-item-checked?!
   [{:keys [id]}]
   (action [{:keys [state]}]
-          (let [ident [:item/by-id id]
-                current-item (get-in @state ident)
-                updated-item (update current-item :item/checked? not)]
-            (swap! state assoc-in ident updated-item))))
+          (swap! state update-in [:item/by-id id :item/checked?] not)))
 
 (defmutation add-item!
   [_]
