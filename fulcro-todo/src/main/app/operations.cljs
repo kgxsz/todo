@@ -4,15 +4,18 @@
 (defmutation toggle-item-checked?!
   [{:keys [id]}]
   (action [{:keys [state]}]
-          (swap! state update-in [:item/by-id id :item/checked?] not)))
+          (let [ident [:item/by-id id]
+                current-item (get-in @state ident)
+                updated-item (update current-item :item/checked? not)]
+            (swap! state assoc-in ident updated-item))))
 
 (defmutation delete-item!
   [{:keys [id]}]
   (action [{:keys [state]}]
-          (let [ident-to-remove [:item/by-id id]
-                strip-fk (fn [old-fks]
-                           (vec (remove #(= ident-to-remove %) old-fks)))]
-            (swap! state update-in [:item-list :item-list/items] strip-fk))))
+          (let [ident [:item/by-id id]
+                current-items (get-in @state [:item-list :item-list/items])
+                updated-items (vec (remove #(= ident %) current-items))]
+            (swap! state assoc-in [:item-list :item-list/items] updated-items))))
 
 (defmutation update-input-value!
   [{:keys [input-value]}]
