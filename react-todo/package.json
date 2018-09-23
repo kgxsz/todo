@@ -5,12 +5,12 @@
   "dependencies": {
     "flow-bin": "^0.53.1",
     "husky": "^0.14.3",
-    "lint-staged": "^4.0.4",
+    "lint-staged": "^4.3.0",
     "normalize.css": "^7.0.0",
-    "prettier": "^1.5.3",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-scripts": "1.0.12"
+    "prettier": "^1.14.3",
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2",
+    "react-scripts": "^1.1.5"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
