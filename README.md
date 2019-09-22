@@ -1,6 +1,6 @@
 # Todo
 
-##### Todo lists to play around with React, Elm, Redux, Reframe, and Fulcro.
+##### Todo lists to play around with React, Elm, Redux, Re-frame, and Fulcro.
 
 ## See it live
 - [React Todo](https://react.todo.keigo.io/).
